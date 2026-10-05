@@ -95,17 +95,21 @@ For example, pH is not present in the supplied ocean CSV. When it is required by
 
 The local speed of sound in seawater is calculated using the Mackenzie sound-speed formulation. In simplified form, the sound speed can be written as
 
-\[
+$$
+
 c = f(T,S,D),
-\]
+
+$$
 
 where \(T\) is temperature, \(S\) is salinity and \(D\) is depth.
 
 Sound speed affects several later calculations. In particular, the theoretical range resolution of a waveform is
 
-\[
+$$
+
 \Delta R = \frac{c}{2B},
-\]
+
+$$
 
 where \(B\) is the waveform bandwidth.
 
@@ -123,9 +127,11 @@ The candidate set spans approximately **60--590 kHz** in center frequency and **
 
 For a waveform with bandwidth \(B\) and pulse duration \(T_p\), the time-bandwidth product is
 
-\[
+$$
+
 BT_p,
-\]
+
+$$
 
 which also contributes to matched-filter processing gain.
 
@@ -133,17 +139,21 @@ which also contributes to matched-filter processing gain.
 
 Each ocean observation is expanded across **12 target-range scenarios**. Thus, the final offline dataset contains
 
-\[
+$$
+
 1839 \times 12 = 22068
-\]
+
+$$
 
 environment-range scenarios.
 
 Every scenario is then evaluated against all 24 candidates:
 
-\[
+$$
+
 22068 \times 24 = 529632
-\]
+
+$$
 
 candidate evaluations.
 
@@ -155,9 +165,11 @@ The final fixed dataset generator uses the **Francois-Garrison** model for frequ
 
 The absorption coefficient is represented as
 
-\[
+$$
+
 \alpha = \alpha(f,T,S,D,pH,c),
-\]
+
+$$
 
 with units of dB/km.
 
@@ -165,17 +177,21 @@ This makes the candidate frequency an important part of the optimization. Two wa
 
 One-way transmission loss is modelled using geometric spreading and absorption:
 
-\[
+$$
+
 TL = 20\log_{10}(R) + \alpha\frac{R}{1000},
-\]
+
+$$
 
 where \(R\) is range in metres.
 
 For an active sonar return, the propagation loss occurs on both the outgoing and return paths. The received level is therefore modelled as
 
-\[
+$$
+
 RL = SL - 2TL + TS,
-\]
+
+$$
 
 where \(SL\) is source level and \(TS\) is target strength.
 
@@ -185,9 +201,11 @@ Ambient noise is modelled as a frequency-dependent combination of thermal and wi
 
 The noise level over candidate bandwidth \(B\) is represented as
 
-\[
+$$
+
 NL_B = NL_{PSD}(f) + NF + 10\log_{10}(B).
-\]
+
+$$
 
 Turbidity is not inserted directly into the Mackenzie sound-speed equation. In the final generator it affects the model through a volume-reverberation term. The reverberation model includes turbidity and frequency dependence so that candidates can be compared under different scattering conditions.
 
@@ -197,17 +215,21 @@ This quantity is **model-derived** and should not be interpreted as a direct mea
 
 The matched-filter processing gain is approximated from the time-bandwidth product:
 
-\[
+$$
+
 G_p \approx 10\log_{10}(BT_p).
-\]
+
+$$
 
 A processed noise-limited detection metric is calculated from received level, noise level and processing gain. A separate signal-to-reverberation term is also evaluated. These terms are combined into a processed SINR estimate.
 
 The detection margin is defined relative to the required minimum processed SNR/SINR:
 
-\[
+$$
+
 M = SINR - SINR_{min}.
-\]
+
+$$
 
 A candidate must have non-negative detection margin and satisfy the required range resolution.
 
@@ -237,9 +259,11 @@ The candidate space is filtered using explicit hardware constraints:
 
 The DAC requirement is checked using the implemented condition
 
-\[
+$$
+
 f_s \ge 2\left(f_c + \frac{B}{2}\right).
-\]
+
+$$
 
 The energy value used in the model is an **engineering estimate** based on normalized waveform amplitude and pulse duration. It is not presented as a calibrated electrical power measurement.
 
@@ -251,9 +275,11 @@ OJAS uses a two-stage selection process.
 
 A candidate is considered valid only when it satisfies the hardware, detection and resolution requirements:
 
-\[
+$$
+
 Valid = HW_{ok} \land Detection_{ok} \land Resolution_{ok}.
-\]
+
+$$
 
 Invalid candidates are removed before scoring.
 
@@ -261,7 +287,8 @@ Invalid candidates are removed before scoring.
 
 For feasible candidates, the score combines normalized resolution, sidelobe performance, detection margin and an energy penalty. In the final implementation, the weights are:
 
-\[
+$$
+
 w_{res}=0.30,
 \quad
 w_{PSL}=0.30,
@@ -271,13 +298,16 @@ w_{ISL}=0.15,
 w_{margin}=0.25,
 \quad
 w_{energy}=0.15.
-\]
+
+$$
 
 The implemented score can be represented conceptually as
 
-\[
+$$
+
 Score = w_{res}R_n + w_s S_n + w_{margin}M_n - w_{energy}E_n,
-\]
+
+$$
 
 where the sidelobe contribution is activated more strongly when signal-to-reverberation conditions make sidelobe suppression important.
 
