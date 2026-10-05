@@ -95,23 +95,15 @@ For example, pH is not present in the supplied ocean CSV. When it is required by
 
 The local speed of sound in seawater is calculated using the Mackenzie sound-speed formulation. In simplified form, the sound speed can be written as
 
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?c%20%3D%20f%28T%2CS%2CD%29%2C" alt="c equals f of T, S, D"></p>
 
-c = f(T,S,D),
-
-$$
-
-where \(T\) is temperature, \(S\) is salinity and \(D\) is depth.
+where <i>T</i> is temperature, <i>S</i> is salinity and <i>D</i> is depth.
 
 Sound speed affects several later calculations. In particular, the theoretical range resolution of a waveform is
 
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?%5CDelta%20R%20%3D%20%5Cfrac%7Bc%7D%7B2B%7D%2C" alt="Delta R equals c divided by 2B"></p>
 
-\Delta R = \frac{c}{2B},
-
-$$
-
-where \(B\) is the waveform bandwidth.
+where <i>B</i> is the waveform bandwidth.
 
 Therefore, the same waveform bandwidth can result in a different theoretical range resolution under different environmental conditions.
 
@@ -125,13 +117,9 @@ OJAS does not assume that one waveform is always best. It evaluates a defined de
 
 The candidate set spans approximately **60--590 kHz** in center frequency and **10--20 kHz** in bandwidth. Pulse duration is defined consistently with bandwidth, and phase-coded candidates use a chip duration related to the inverse of bandwidth.
 
-For a waveform with bandwidth \(B\) and pulse duration \(T_p\), the time-bandwidth product is
+For a waveform with bandwidth <i>B</i> and pulse duration <i>T<sub>p</sub></i>, the time-bandwidth product is
 
-$$
-
-BT_p,
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?BT_p%2C" alt="B times T sub p"></p>
 
 which also contributes to matched-filter processing gain.
 
@@ -139,21 +127,13 @@ which also contributes to matched-filter processing gain.
 
 Each ocean observation is expanded across **12 target-range scenarios**. Thus, the final offline dataset contains
 
-$$
-
-1839 \times 12 = 22068
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?1839%20%5Ctimes%2012%20%3D%2022068" alt="1839 times 12 equals 22068"></p>
 
 environment-range scenarios.
 
 Every scenario is then evaluated against all 24 candidates:
 
-$$
-
-22068 \times 24 = 529632
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?22068%20%5Ctimes%2024%20%3D%20529632" alt="22068 times 24 equals 529632"></p>
 
 candidate evaluations.
 
@@ -165,11 +145,7 @@ The final fixed dataset generator uses the **Francois-Garrison** model for frequ
 
 The absorption coefficient is represented as
 
-$$
-
-\alpha = \alpha(f,T,S,D,pH,c),
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?%5Calpha%20%3D%20%5Calpha%28f%2CT%2CS%2CD%2CpH%2Cc%29%2C" alt="alpha equals alpha of f, T, S, D, pH, c"></p>
 
 with units of dB/km.
 
@@ -177,35 +153,23 @@ This makes the candidate frequency an important part of the optimization. Two wa
 
 One-way transmission loss is modelled using geometric spreading and absorption:
 
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?TL%20%3D%2020%5Clog_%7B10%7D%28R%29%20%2B%20%5Calpha%5Cfrac%7BR%7D%7B1000%7D%2C" alt="TL equals 20 log base 10 of R plus alpha R divided by 1000"></p>
 
-TL = 20\log_{10}(R) + \alpha\frac{R}{1000},
-
-$$
-
-where \(R\) is range in metres.
+where <i>R</i> is range in metres.
 
 For an active sonar return, the propagation loss occurs on both the outgoing and return paths. The received level is therefore modelled as
 
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?RL%20%3D%20SL%20-%202TL%20%2B%20TS%2C" alt="RL equals SL minus 2TL plus TS"></p>
 
-RL = SL - 2TL + TS,
-
-$$
-
-where \(SL\) is source level and \(TS\) is target strength.
+where <i>SL</i> is source level and <i>TS</i> is target strength.
 
 ## 9. Noise and Turbidity
 
 Ambient noise is modelled as a frequency-dependent combination of thermal and wind-related components. Receiver noise figure is also included.
 
-The noise level over candidate bandwidth \(B\) is represented as
+The noise level over candidate bandwidth <i>B</i> is represented as
 
-$$
-
-NL_B = NL_{PSD}(f) + NF + 10\log_{10}(B).
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?NL_B%20%3D%20NL_%7BPSD%7D%28f%29%20%2B%20NF%20%2B%2010%5Clog_%7B10%7D%28B%29." alt="NL sub B equals NL sub PSD of f plus NF plus 10 log base 10 of B"></p>
 
 Turbidity is not inserted directly into the Mackenzie sound-speed equation. In the final generator it affects the model through a volume-reverberation term. The reverberation model includes turbidity and frequency dependence so that candidates can be compared under different scattering conditions.
 
@@ -215,21 +179,13 @@ This quantity is **model-derived** and should not be interpreted as a direct mea
 
 The matched-filter processing gain is approximated from the time-bandwidth product:
 
-$$
-
-G_p \approx 10\log_{10}(BT_p).
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?G_p%20%5Capprox%2010%5Clog_%7B10%7D%28BT_p%29." alt="G sub p approximately equals 10 log base 10 of B T sub p"></p>
 
 A processed noise-limited detection metric is calculated from received level, noise level and processing gain. A separate signal-to-reverberation term is also evaluated. These terms are combined into a processed SINR estimate.
 
 The detection margin is defined relative to the required minimum processed SNR/SINR:
 
-$$
-
-M = SINR - SINR_{min}.
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?M%20%3D%20SINR%20-%20SINR_%7Bmin%7D." alt="M equals SINR minus SINR sub min"></p>
 
 A candidate must have non-negative detection margin and satisfy the required range resolution.
 
@@ -259,11 +215,7 @@ The candidate space is filtered using explicit hardware constraints:
 
 The DAC requirement is checked using the implemented condition
 
-$$
-
-f_s \ge 2\left(f_c + \frac{B}{2}\right).
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?f_s%20%5Cge%202%5Cleft%28f_c%20%2B%20%5Cfrac%7BB%7D%7B2%7D%5Cright%29." alt="f sub s greater than or equal to 2 times open parenthesis f sub c plus B over 2 close parenthesis"></p>
 
 The energy value used in the model is an **engineering estimate** based on normalized waveform amplitude and pulse duration. It is not presented as a calibrated electrical power measurement.
 
@@ -275,11 +227,7 @@ OJAS uses a two-stage selection process.
 
 A candidate is considered valid only when it satisfies the hardware, detection and resolution requirements:
 
-$$
-
-Valid = HW_{ok} \land Detection_{ok} \land Resolution_{ok}.
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?Valid%20%3D%20HW_%7Bok%7D%20%5Cland%20Detection_%7Bok%7D%20%5Cland%20Resolution_%7Bok%7D." alt="Valid equals HW sub ok and Detection sub ok and Resolution sub ok"></p>
 
 Invalid candidates are removed before scoring.
 
@@ -287,27 +235,11 @@ Invalid candidates are removed before scoring.
 
 For feasible candidates, the score combines normalized resolution, sidelobe performance, detection margin and an energy penalty. In the final implementation, the weights are:
 
-$$
-
-w_{res}=0.30,
-\quad
-w_{PSL}=0.30,
-\quad
-w_{ISL}=0.15,
-\quad
-w_{margin}=0.25,
-\quad
-w_{energy}=0.15.
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?w_%7Bres%7D%3D0.30%2C%20%20w_%7BPSL%7D%3D0.30%2C%20%20w_%7BISL%7D%3D0.15%2C%20%20w_%7Bmargin%7D%3D0.25%2C%20%20w_%7Benergy%7D%3D0.15." alt="w sub res equals 0.30, w sub PSL equals 0.30, w sub ISL equals 0.15, w sub margin equals 0.25, w sub energy equals 0.15"></p>
 
 The implemented score can be represented conceptually as
 
-$$
-
-Score = w_{res}R_n + w_s S_n + w_{margin}M_n - w_{energy}E_n,
-
-$$
+<p align="center"><img src="https://latex.codecogs.com/svg.image?Score%20%3D%20w_%7Bres%7DR_n%20%2B%20w_s%20S_n%20%2B%20w_%7Bmargin%7DM_n%20-%20w_%7Benergy%7DE_n%2C" alt="Score equals w sub res R sub n plus w sub s S sub n plus w sub margin M sub n minus w sub energy E sub n"></p>
 
 where the sidelobe contribution is activated more strongly when signal-to-reverberation conditions make sidelobe suppression important.
 
@@ -346,7 +278,7 @@ This is the main reason the system can be adaptive while keeping the onboard com
 
 The intended prototype architecture is:
 
-**Arduino environmental input \(\rightarrow\) STM32 processing \(\rightarrow\) laptop monitoring**
+**Arduino environmental input → STM32 processing → laptop monitoring**
 
 The Arduino acts as the environmental-data front end in the prototype. The STM32 represents the real-time processing and waveform-generation platform. The laptop is used for monitoring, plotting and validation.
 
